@@ -1,5 +1,5 @@
 #include <iostream>
-using namesapce std;
+using namespace std;
 
 struct Path
 {
