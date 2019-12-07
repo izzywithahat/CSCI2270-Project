@@ -16,14 +16,11 @@ void menu(){
 }
 
 int main()
-{ /*
-	string find, title, input, del;
-	ifstream inFile(argv[1]);
-	inFile.is_open();
-*/
+{
 PathFinder PathFinder;
 string input;
 bool run = true;
+int intinput;
 
 cout << "Enter Input Map File (.txt)" << endl;
 getline(cin,input);
@@ -36,6 +33,7 @@ while(!inFile.is_open()){
   ifstream inFile(input);
 }
 PathFinder.ConstructGraph(inFile);
+PathFinder.SearchPaths();
 
 while(run){
   menu();
@@ -53,21 +51,31 @@ while(run){
         getline(cin,input);
         ifstream inFile(input);
       }
-      PathFinder.ConstructGraph(inFile);
-
+      PathFinder.ConstructGraph(inFile); //Create Graph From Input inFile
+      PathFinder.SearchPaths(); //Breadth First Search and Sort Paths in Priority Queue
       run=true;
     break;
 
     case 2: //Display List of Path Lengths
-
+      PathFinder.DisplayPriorityQueue();
       run=true;
     break;
 
     case 3: //Select and Display Path
+      PathFinder.DisplayPriorityQueue();
+      cout << "Enter the index number of the Path you would like to take" << endl;
+      getline(cin,input);
+      index=stoi(input);
+      PathFinder.DisplayPath(int index);
       run=true;
     break;
 
     case 4: //Output Map with Selected Path
+    PathFinder.DisplayPriorityQueue();
+      cout << "Enter the index number of the Path you would like to take" << endl;
+      getline(cin,input);
+      index=stoi(input);
+      PathFinder.SavePath(int index);
       run=true;
     break;
 
@@ -75,6 +83,7 @@ while(run){
       cout << "Goodbye!" << endl;
       run=false;
       inFile.close();
+      ~Path();
     break;
     default:
       cout << "Invalid Input" << endl;
