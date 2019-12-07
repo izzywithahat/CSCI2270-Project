@@ -28,8 +28,8 @@ struct Path
 class PathFinder
 {
 	public:
-		path();
-		~path();
+		PathFinder();
+		~PathFinder();
 		void ConstructGraph(ifstream& inFile);
 		void SearchPaths();
 		void DisplayLL();
