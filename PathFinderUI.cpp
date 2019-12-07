@@ -21,16 +21,17 @@ PathFinder PathFinder;
 string input;
 bool run = true;
 int index;
+ifstream inFile;
 
 cout << "Enter Input Map File (.txt)" << endl;
 getline(cin,input);
-ifstream inFile(input);
+inFile.open(input);
 
 while(!inFile.is_open()){
   cout << "Invalid Input File, please enter valid Input File (.txt)" << endl;
   cout << "Enter Input Map File (.txt)" << endl;
   getline(cin,input);
-  ifstream inFile(input);
+  inFile.open(input);;
 }
 PathFinder.ConstructGraph(inFile);
 PathFinder.SearchPaths();
@@ -43,13 +44,13 @@ while(run){
     case 1: //Change the Map File (.txt)
       cout << "Enter Input Map File (.txt)" << endl;
       getline(cin,input);
-      ifstream inFile(input);
+      inFile.open(input);;
 
       while(!inFile.is_open()){
         cout << "Invalid Input File, please enter valid Input File (.txt)" << endl;
         cout << "Enter Input Map File (.txt)" << endl;
         getline(cin,input);
-        ifstream inFile(input);
+        inFile.open(input);;
       }
       PathFinder.ConstructGraph(inFile); //Create Graph From Input inFile
       PathFinder.SearchPaths(); //Breadth First Search and Sort Paths in Priority Queue
@@ -83,7 +84,7 @@ while(run){
       cout << "Goodbye!" << endl;
       run=false;
       inFile.close();
-      ~Path();
+      PathFinder.~PathFinder();
     break;
     default:
       cout << "Invalid Input" << endl;
