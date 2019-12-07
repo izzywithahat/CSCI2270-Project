@@ -17,6 +17,7 @@ struct LLPath
 
 struct Path
 {
+	int type;
 	int x = 0;
 	int y = 0;
 	Path *northChild = NULL;
