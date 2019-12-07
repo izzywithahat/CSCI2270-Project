@@ -57,25 +57,25 @@ while(run){
     break;
 
     case 2: //Display List of Path Lengths
-      PathFinder.DisplayPriorityQueue();
+      PathFinder.DisplayLL();
       run=true;
     break;
 
     case 3: //Select and Display Path
-      PathFinder.DisplayPriorityQueue();
+      PathFinder.DisplayLL();
       cout << "Enter the index number of the Path you would like to take" << endl;
       getline(cin,input);
       index=stoi(input);
-      PathFinder.DisplayPath(int index);
+      PathFinder.DisplayPath(index);
       run=true;
     break;
 
     case 4: //Output Map with Selected Path
-    PathFinder.DisplayPriorityQueue();
+    PathFinder.DisplayLL();
       cout << "Enter the index number of the Path you would like to take" << endl;
       getline(cin,input);
       index=stoi(input);
-      PathFinder.SavePath(int index);
+      PathFinder.SavePath(inFile, index);
       run=true;
     break;
 
