@@ -20,10 +20,10 @@ struct Path
 	int type;
 	int x = 0;
 	int y = 0;
-	Path *northChild = NULL;
-	Path *southChild = NULL;
-	Path *westChild = NULL;
-	Path *eastChild = NULL;
+	Path *NChild = NULL;
+	Path *SChild = NULL;
+	Path *WChild = NULL;
+	Path *EChild = NULL;
 };
 
 class PathFinder

@@ -44,7 +44,7 @@ while(run){
     case 1: //Change the Map File (.txt)
       cout << "Enter Input Map File (.txt)" << endl;
       getline(cin,input);
-      inFile.open(input);;
+      inFile.open(input);
 
       while(!inFile.is_open()){
         cout << "Invalid Input File, please enter valid Input File (.txt)" << endl;
