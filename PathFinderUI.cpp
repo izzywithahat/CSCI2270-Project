@@ -20,7 +20,7 @@ int main()
 PathFinder PathFinder;
 string input;
 bool run = true;
-int intinput;
+int index;
 
 cout << "Enter Input Map File (.txt)" << endl;
 getline(cin,input);

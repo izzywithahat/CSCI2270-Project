@@ -34,7 +34,7 @@ class PathFinder
 		void SearchPaths();
 		void DisplayLL();
 		void DisplayPath(int index);
-		void SavePath(ifsream& inFile, int index)
+		void SavePath(ifstream& inFile, int index);
 
 	private:
 		Path *root = NULL;
