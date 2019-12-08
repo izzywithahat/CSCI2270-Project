@@ -106,7 +106,7 @@ void searchHelper(Path* node, char Que[], int xCrumb[], int yCrumb[], int dist, 
       int i = 0;
 
       //TAKE A STEP NORTH
-		  if (node->NChild->type == 1 || !node->NChild) flag = 1;
+	  if (node->NChild->type == 1 || !node->NChild) flag = 1;
       for(i = 0; i < dist; i++)
       	if(node->NChild->x == newxCrumb[i] && node->NChild->y == newyCrumb[i])
       		flag = 1;
