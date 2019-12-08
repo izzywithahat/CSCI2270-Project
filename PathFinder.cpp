@@ -57,9 +57,9 @@ void searchHelper(Path* node, char Que[], int dist, char StepDir)
 {
 	dist++;                         //Increase Distance by one step
 	char newQue = new char[dist];   //Allocate new Queue
-	for(int i = 0; i < dist-1; i++)       //Copy Old Queue
+	for(int i = 0; i < dist-1; i++) //Copy Old Queue
 		newQue[i] = Que[i];
-	newQue[dist-1] = StepDir;         //Update Queue with new Step
+	newQue[dist-1] = StepDir;       //Update Queue with new Step
 
 	//If at end -> save newQue to LL
 	if(node->type == 3)
@@ -80,33 +80,6 @@ void searchHelper(Path* node, char Que[], int dist, char StepDir)
 void PathFinder::SearchPaths(Path* root)
 {
   searchHelper(root);
-	/*create dynamic array at root
-	 copy and add to array at each step
-	 if 3 is found copy to linked list then deallocate
-	 else deallocate */
-  //IZZY's Code vvv
-  /*
-	bool found = false;
-	int capacity = 50;
-	Path* temp = root;
-	PathQ* temp2;
-	temp2 = new PathQ[capacity];
-
-	while(found)
-	{
-		if(temp->WChild == 3 || temp->SChild == 3 || temp->EChild == 3 || temp->NChild == 3)
-		{
-
-			found = true;
-		}
-		else
-		{
-
-		}
-	}
-  */
-
-
 }
 
 void PathFinder::DisplayLL()
@@ -123,6 +96,15 @@ void PathFinder::DisplayLL()
 
 void PathFinder::DisplayPath(int index)
 {
+	LLPath *temp = root;
+	for(int i = 0; i < index; i++)
+	{
+		
+	}
+		// while(temp->next != NULL)
+		// {
+		// 	cout << temp->dist
+		// }
 
 }
 
