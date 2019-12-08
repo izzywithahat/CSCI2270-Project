@@ -11,7 +11,7 @@ PathFinder::PathFinder(){}
 
 PathFinder::~PathFinder(){}
 
-void PathFinder::ConstructGraph(ifstream& inFile)
+Path* PathFinder::ConstructGraph(ifstream& inFile)
 {
   string line;
   string token;
@@ -47,13 +47,24 @@ void PathFinder::ConstructGraph(ifstream& inFile)
   }
 }
 
-void searchHelper(Path* node, char Que[], int dist, char StepDir)
+void searchHelper(Path* node, char Que[], int xCrumb[], int yCrumb[], int dist, char StepDir)
 {
-	dist++;                         //Increase Distance by one step
-	char newQue = new char[dist];   //Allocate new Queue
-	for(int i = 0; i < dist-1; i++) //Copy Old Queue
-		newQue[i] = Que[i];
-	newQue[dist-1] = StepDir;       //Update Queue with new Step
+	dist++;                              //Increase Distance by one step
+	char newQue    = new  char[dist];    //Allocate new Queue
+	int  newxCrumb = new  int[dist];
+	int  newyCrumb = new  int[dist];
+
+	for(int i = 0; i < dist-1; i++) 	//Copy Old Queue & Breadcrumb Trail
+	{
+		newQue[i]= Que[i];
+    	newxCrumb[i]= xCrumb[i];
+    	newyCrumb[i]= yCrumb[i];
+    }
+
+    newQue[dist-1] = StepDir;       //Update Queue with new Step
+    newxCrumb[dist-1] = node->x;    //Update Breadcrumb Trail with New Postion
+    newyCrumb[dist-1] = node->y;    //Update Breadcrumb Trail with New Postion
+
 
 	//If at end -> save newQue to LL
 	if(node->type == 3)
@@ -63,12 +74,22 @@ void searchHelper(Path* node, char Que[], int dist, char StepDir)
 	}
 	else
 	{
-		if(StepDir != 'N' && node->NChild->type != 1 && node->NChild->type != 2) searchHelper(node->NChild, newQue, dist, 'N');
+      int flag = 0;
+      int i = 0;
+		  if (StepDir == 'N' || node->NChild->type != 1) flag = 1;
+      for(i = 0; i < dist; i++) 
+      	if(node->NChild->x == newxCrumb[i] && node->NChild->y == newyCrumb[i]) 
+      		flag = 1;
+      if (flag=0) searchHelper(node->NChild, newQue, dist, 'N');
+      	flag = 0;
+
 	    if(StepDir != 'W' && node->WChild->type != 1 && node->WChild->type != 2) searchHelper(node->WChild, newQue, dist, 'W');
 	    if(StepDir != 'S' && node->SChild->type != 1 && node->SChild->type != 2) searchHelper(node->SChild, newQue, dist, 'S');
 	    if(StepDir != 'E' && node->EChild->type != 1 && node->EChild->type != 2) searchHelper(node->EChild, newQue, dist, 'E');
 	}
 	delete [] newQue;
+  	delete [] newxCrumb;
+  	delete [] newyCrumb;
 }
 
 void PathFinder::SearchPaths(Path* root)
