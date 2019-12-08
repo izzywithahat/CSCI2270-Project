@@ -7,15 +7,9 @@
 using namespace std;
 PathFinder PathFinder;
 
-PathFinder::PathFinder()
-{
+PathFinder::PathFinder(){}
 
-}
-
-PathFinder::~PathFinder()
-{
-
-}
+PathFinder::~PathFinder(){}
 
 void PathFinder::ConstructGraph(ifstream& inFile)
 {
@@ -88,7 +82,7 @@ void PathFinder::DisplayLL()
 	LLPath* temp = head;
 	while(temp != NULL)
 	{
-		cout << "Option: " << count << " Distance: " temp->dist << endl;
+		cout << "Path Number: " << count << " Path Distance: " temp->dist << endl;
 		temp = temp->next;
 		count++;
 	}
@@ -96,16 +90,20 @@ void PathFinder::DisplayLL()
 
 void PathFinder::DisplayPath(int index)
 {
-	LLPath *temp = root;
+	LLPath *temp = head;
 	for(int i = 0; i < index; i++)
 	{
-		
+		temp = temp->next;
 	}
-		// while(temp->next != NULL)
-		// {
-		// 	cout << temp->dist
-		// }
-
+	cout << "Path Number: " << index << endl;
+	cout << "Path Distance: " << temp << endl;
+	cout << "Path directions from 2 to 3" << endl;
+	cout << "Start: 2" << endl;
+	for(int j = 0; j < Link2U->arrEnd; j++)
+	{
+		cout << temp->Link2U->arrQ[j] << endl;
+	}
+	cout << "End: 3" << endl;
 }
 
 void PathFinder::SavePath(ifstream& inFile, int index)
