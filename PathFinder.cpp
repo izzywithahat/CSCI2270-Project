@@ -53,21 +53,36 @@ void PathFinder::ConstructGraph(ifstream& inFile)
   }
 }
 
-void searchHelper()
+bool searchHelper(Path* node, char Que[], int dist, char StepDir)
 {
+  
+  //If at end -> save Que to
+  if(node->type==3){
+    saveNode(newQue,dist);
+    //WE DID IT
+  }
+  else{
+    searchHelper(node->NChild, newQue, dist+1)
+    searchHelper(node->WChild, newQue, dist+1)
+    searchHelper(node->SChild, newQue, dist+1)
+    searchHelper(node->EChild, newQue, dist+1)
+  }
 
 }
 
-void PathFinder::SearchPaths()
+void PathFinder::SearchPaths(Path* root)
 {
-	// create dynamic array at root
-	// copy and add to array at each step
-	// if 3 is found copy to linked list then deallocate
-	// else deallocate
+  searchHelper(root);
+	/*create dynamic array at root
+	 copy and add to array at each step
+	 if 3 is found copy to linked list then deallocate
+	 else deallocate */
+  //IZZY's Code vvv
+  /*
 	bool found = false;
 	int capacity = 50;
 	Path* temp = root;
-	PathQ* temp2; 
+	PathQ* temp2;
 	temp2 = new PathQ[capacity];
 
 	while(found)
@@ -82,6 +97,9 @@ void PathFinder::SearchPaths()
 
 		}
 	}
+  */
+
+
 }
 
 void PathFinder::DisplayLL()
