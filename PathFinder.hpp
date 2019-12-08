@@ -4,7 +4,7 @@ using namespace std;
 
 struct PathQ
 {
-	char arrQ[50];
+	char* arrQ;
 	int arrEnd;
 };
 
@@ -38,6 +38,7 @@ class PathFinder
 		void DisplayLL();
 		void DisplayPath(int index);
 		void SavePath(ifstream& inFile, int index);
+		void CreateLLNode(char arrQ[], int xCrumb[], int yCrumb[], int dist);
 
 	private:
 		Path *root = NULL;
