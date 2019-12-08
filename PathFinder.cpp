@@ -12,7 +12,7 @@ PathFinder::PathFinder(){}
 PathFinder::~PathFinder(){}
 
 void PathFinder::CreateLLNode(char arrQ[], int xCrumb[], int yCrumb[], int dist){
-  LLPath newNode = new LLPath;
+  LLPath* newNode = new LLPath;
   newNode->Link2U->arrEnd=dist;
   newNode->Link2U->arrQ=arrQ;
   newNode->dist = dist;
@@ -28,12 +28,12 @@ void PathFinder::CreateLLNode(char arrQ[], int xCrumb[], int yCrumb[], int dist)
   }
   else{
     curr = head;
-    while (curr->next!=NULL && curr->next->dist < new_node->dist)
+    while (curr->next!=NULL && curr->next->dist < newnode->dist)
       curr=curr->next;
-    newNode->next=curr->next
+    newNode->next=curr->next;
     curr->next=newNode;
   }
-    
+
 }
 
 Path** PathFinder::ConstructGraph(ifstream& inFile)
@@ -76,9 +76,9 @@ Path** PathFinder::ConstructGraph(ifstream& inFile)
 void searchHelper(Path* node, char Que[], int xCrumb[], int yCrumb[], int dist, char StepDir)
 {
 	dist++;                              //Increase Distance by one step
-	char newQue    = new  char[dist];    //Allocate new Queue
-	int  newxCrumb = new  int[dist];
-	int  newyCrumb = new  int[dist];
+	char* newQue    = new  char[dist];    //Allocate new Queue
+	int*  newxCrumb = new  int[dist];
+	int*  newyCrumb = new  int[dist];
 
 	for(int i = 0; i < dist-1; i++) 	   //Copy Old Queue & Breadcrumb Trail
 	{
@@ -125,7 +125,7 @@ void searchHelper(Path* node, char Que[], int xCrumb[], int yCrumb[], int dist, 
       if (flag==0) searchHelper(node->SChild, newQue, newxCrumb, newyCrumb, dist, 'N');
       	flag = 0;
       //TAKE A STEP EAST
-      if (Sode->EChild->type == 1 || !node->EChild) flag = 1;
+      if (node->EChild->type == 1 || !node->EChild) flag = 1;
       for(i = 0; i < dist; i++)
        if(node->EChild->x == newxCrumb[i] && node->EChild->y == newyCrumb[i])
          flag = 1;

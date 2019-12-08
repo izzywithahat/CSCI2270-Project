@@ -34,7 +34,7 @@ class PathFinder
 		PathFinder();
 		~PathFinder();
 		Path** ConstructGraph(ifstream& inFile);
-		void SearchPaths();
+		void SearchPaths(Path* root);
 		void DisplayLL();
 		void DisplayPath(int index);
 		void SavePath(ifstream& inFile, int index);
