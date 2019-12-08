@@ -11,29 +11,31 @@ PathFinder::PathFinder(){}
 
 PathFinder::~PathFinder(){}
 
-void PathFinder::CreateLLNode(char arrQ[], int xCrumb[], int yCrumb[], int dist){
+void PathFinder::CreateLLNode(char arrQ[], int xCrumb[], int yCrumb[], int dist)
+{
   LLPath* newNode = new LLPath;
-  newNode->Link2U->arrEnd=dist;
-  newNode->Link2U->arrQ=arrQ;
+  newNode->Link2U->arrEnd = dist;
+  newNode->Link2U->arrQ = arrQ;
   newNode->dist = dist;
-  newNode->xCrumb=xCrumb;
-  newNode->yCrumb=yCrumb;
+  newNode->xCrumb = xCrumb;
+  newNode->yCrumb = yCrumb;
   newNode->next=NULL;
 
   LLPath* curr;
 
-  if(head->dist>newNode->dist || !head){
-    newNode->next=head;
-    head=newnode;
+  if(head->dist>newNode->dist || !head)
+  {
+    newNode->next = head;
+    head = newnode;
   }
-  else{
+  else
+  {
     curr = head;
-    while (curr->next!=NULL && curr->next->dist < newnode->dist)
-      curr=curr->next;
-    newNode->next=curr->next;
-    curr->next=newNode;
+    while (curr->next != NULL && curr->next->dist < newnode->dist)
+      curr = curr->next;
+    newNode->next = curr->next;
+    curr->next = newNode;
   }
-
 }
 
 Path** PathFinder::ConstructGraph(ifstream& inFile)
@@ -95,7 +97,7 @@ void searchHelper(Path* node, char Que[], int xCrumb[], int yCrumb[], int dist, 
 	//If at end -> save newQue to LL
 	if(node->type == 3)
     {
-		CreateLLNode(newQue,newxCrumb,newyCrumb,dist);
+		CreateLLNode(newQue, newxCrumb, newyCrumb, dist);
 	    //WE DID IT
 	}
 	else
@@ -115,24 +117,24 @@ void searchHelper(Path* node, char Que[], int xCrumb[], int yCrumb[], int dist, 
       for(i = 0; i < dist; i++)
         if(node->WChild->x == newxCrumb[i] && node->WChild->y == newyCrumb[i])
           flag = 1;
-      if (flag==0) searchHelper(node->WChild, newQue, newxCrumb, newyCrumb, dist, 'W');
+      if (flag == 0) searchHelper(node->WChild, newQue, newxCrumb, newyCrumb, dist, 'W');
         flag = 0;
       //TAKE A STEP SOUTH
       if (node->SChild->type == 1 || !node->SChild) flag = 1;
       for(i = 0; i < dist; i++)
       	if(node->SChild->x == newxCrumb[i] && node->SChild->y == newyCrumb[i])
       		flag = 1;
-      if (flag==0) searchHelper(node->SChild, newQue, newxCrumb, newyCrumb, dist, 'N');
+      if (flag == 0) searchHelper(node->SChild, newQue, newxCrumb, newyCrumb, dist, 'N');
       	flag = 0;
       //TAKE A STEP EAST
       if (node->EChild->type == 1 || !node->EChild) flag = 1;
       for(i = 0; i < dist; i++)
        if(node->EChild->x == newxCrumb[i] && node->EChild->y == newyCrumb[i])
          flag = 1;
-      if (flag==0) searchHelper(node->EChild, newQue, newxCrumb, newyCrumb, dist, 'E');
+      if (flag == 0) searchHelper(node->EChild, newQue, newxCrumb, newyCrumb, dist, 'E');
        flag = 0;
-         }
-	  delete [] newQue;
+    }
+	delete [] newQue;
   	delete [] newxCrumb;
   	delete [] newyCrumb;
 }
