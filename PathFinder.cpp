@@ -69,7 +69,7 @@ void searchHelper(Path* node, char Que[], int xCrumb[], int yCrumb[], int dist, 
 	//If at end -> save newQue to LL
 	if(node->type == 3)
     {
-		saveNode(newQue,newxCrumb,newyCrumb,dist);
+		saveNode(newQue,dist);
 	    //WE DID IT
 	}
 	else
@@ -77,34 +77,17 @@ void searchHelper(Path* node, char Que[], int xCrumb[], int yCrumb[], int dist, 
       int flag = 0;
       int i = 0;
 		  if (StepDir == 'N' || node->NChild->type != 1) flag = 1;
-      for(i = 0; i < dist; i++)
-      	if(node->NChild->x == newxCrumb[i] && node->NChild->y == newyCrumb[i])
+      for(i = 0; i < dist; i++) 
+      	if(node->NChild->x == newxCrumb[i] && node->NChild->y == newyCrumb[i]) 
       		flag = 1;
       if (flag=0) searchHelper(node->NChild, newQue, dist, 'N');
       	flag = 0;
 
-      if (StepDir == 'N' || node->WChild->type != 1) flag = 1;
-      for(i = 0; i < dist; i++)
-      	if(node->WChild->x == newxCrumb[i] && node->WChild->y == newyCrumb[i])
-      		flag = 1;
-      if (flag=0) searchHelper(node->WChild, newQue, dist, 'N');
-      	flag = 0;
-
-      if (StepDir == 'N' || node->SChild->type != 1) flag = 1;
-      for(i = 0; i < dist; i++)
-       if(node->SChild->x == newxCrumb[i] && node->SChild->y == newyCrumb[i])
-         flag = 1;
-      if (flag=0) searchHelper(node->SChild, newQue, dist, 'N');
-       flag = 0;
-
-       if (StepDir == 'N' || node->EChild->type != 1) flag = 1;
-       for(i = 0; i < dist; i++)
-         if(node->EChild->x == newxCrumb[i] && node->EChild->y == newyCrumb[i])
-           flag = 1;
-       if (flag=0) searchHelper(node->EChild, newQue, dist, 'N');
-         flag = 0;
-         }
-	   delete [] newQue;
+	    if(StepDir != 'W' && node->WChild->type != 1 && node->WChild->type != 2) searchHelper(node->WChild, newQue, dist, 'W');
+	    if(StepDir != 'S' && node->SChild->type != 1 && node->SChild->type != 2) searchHelper(node->SChild, newQue, dist, 'S');
+	    if(StepDir != 'E' && node->EChild->type != 1 && node->EChild->type != 2) searchHelper(node->EChild, newQue, dist, 'E');
+	}
+	delete [] newQue;
   	delete [] newxCrumb;
   	delete [] newyCrumb;
 }
@@ -126,7 +109,7 @@ void PathFinder::DisplayLL()
 	}
 }
 
-void PathFinder::DisplayPath(int index)
+void PathFinder::DisplayPath(int index, Path mat[][])
 {
 	LLPath *temp = head;
 	for(int i = 0; i < index; i++)
@@ -142,6 +125,34 @@ void PathFinder::DisplayPath(int index)
 		cout << temp->Link2U->arrQ[j] << endl;
 	}
 	cout << "End: 3" << endl;
+
+	Path* ptr = root;
+	char matS[18][16];
+	for(int i = 0; i < 16; i++)
+	{
+		for(int j = 0; j < 18; j++)
+		{
+			if(mat[j][i]->type == 0)
+			{
+				matS[j][i] = '0';
+			}
+			else if(mat[j][i]->type == 1)
+			{
+				matS[j][i] = '1';
+			}
+			else if(mat[j][i]->type == 2)
+			{	
+				matS[j][i] = '2';
+			}
+			else if(mat[j][i]->type == 3)
+			{
+				matS[j][i] = '3';
+			}
+			//ptr = ptr->next;
+		}
+	}
+
+
 }
 
 void PathFinder::SavePath(ifstream& inFile, int index)
