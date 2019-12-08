@@ -56,9 +56,9 @@ void searchHelper(Path* node, char Que[], int xCrumb[], int yCrumb[], int dist, 
 
 	for(int i = 0; i < dist-1; i++) 	//Copy Old Queue & Breadcrumb Trail
 	{
-		newQue[i]= Que[i];
-    	newxCrumb[i]= xCrumb[i];
-    	newyCrumb[i]= yCrumb[i];
+		newQue[i] = Que[i];
+    	newxCrumb[i] = xCrumb[i];
+    	newyCrumb[i] = yCrumb[i];
     }
 
     newQue[dist-1] = StepDir;       //Update Queue with new Step
