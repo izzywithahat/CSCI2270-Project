@@ -55,24 +55,26 @@ void PathFinder::ConstructGraph(ifstream& inFile)
 
 void searchHelper(Path* node, char Que[], int dist, char StepDir)
 {
-  dist++;                         //Increase Distance by one step
-  char newQue = new char[dist];   //Allocate new Queue
-  for(int i=0,i<dist-1,i++)       //Copy Old Queue
-    newQue[i]=Que[i];
-  newQue[dist-1]=StepDir;         //Update Queue with new Step
+	dist++;                         //Increase Distance by one step
+	char newQue = new char[dist];   //Allocate new Queue
+	for(int i = 0; i < dist-1; i++)       //Copy Old Queue
+		newQue[i] = Que[i];
+	newQue[dist-1] = StepDir;         //Update Queue with new Step
 
-  //If at end -> save newQue to LL
-  if(node->type==3){
-    saveNode(newQue,dist);
-    //WE DID IT
-  }
-  else{
-    if(StepDir!='N' && node->NChild->type!=1 && node->NChild->type!=2) searchHelper(node->NChild, newQue, dist, 'N');
-    if(StepDir!='W' && node->WChild->type!=1 && node->WChild->type!=2) searchHelper(node->WChild, newQue, dist, 'W');
-    if(StepDir!='S' && node->SChild->type!=1 && node->SChild->type!=2) searchHelper(node->SChild, newQue, dist, 'S');
-    if(StepDir!='E' && node->EChild->type!=1 && node->EChild->type!=2) searchHelper(node->EChild, newQue, dist, 'E');
-  }
-delete [] newQue;
+	//If at end -> save newQue to LL
+	if(node->type == 3)
+    {
+		saveNode(newQue,dist);
+	    //WE DID IT
+	}
+	else
+	{
+		if(StepDir != 'N' && node->NChild->type != 1 && node->NChild->type != 2) searchHelper(node->NChild, newQue, dist, 'N');
+	    if(StepDir != 'W' && node->WChild->type != 1 && node->WChild->type != 2) searchHelper(node->WChild, newQue, dist, 'W');
+	    if(StepDir != 'S' && node->SChild->type != 1 && node->SChild->type != 2) searchHelper(node->SChild, newQue, dist, 'S');
+	    if(StepDir != 'E' && node->EChild->type != 1 && node->EChild->type != 2) searchHelper(node->EChild, newQue, dist, 'E');
+	}
+	delete [] newQue;
 }
 
 void PathFinder::SearchPaths(Path* root)
