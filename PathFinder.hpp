@@ -12,6 +12,8 @@ struct LLPath
 {
 	PathQ Link2U;
 	int dist;
+	int* xCrumb;
+	int* yCrumb;
 	struct LLPath* next;
 };
 
