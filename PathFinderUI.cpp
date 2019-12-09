@@ -33,8 +33,15 @@ while(!inFile.is_open()){
   getline(cin,input);
   inFile.open(input);;
 }
-PathFinder.ConstructGraph(inFile);
-PathFinder.SearchPaths();
+Path* root;
+Path** mat = PathFinder.ConstructGraph(inFile);
+for(int i=0; i<16; i++){
+  for(int j=0; j<18; j++){
+    if(mat[j][i]->type==2)
+      root=mat[j][i];
+  }
+}
+PathFinder.SearchPaths(root);
 
 while(run){
   menu();
