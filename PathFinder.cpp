@@ -38,7 +38,7 @@ void PathFinder::CreateLLNode(char arrQ[], int xCrumb[], int yCrumb[], int dist)
 
 }
 
-Path* PathFinder::ConstructGraph(ifstream& inFile)
+Path* PathFinder::ConstructGraph(ifstream& inFile, Path* mat[][])
 {
   string line;
   string token;

@@ -33,7 +33,7 @@ class PathFinder
 	public:
 		PathFinder();
 		~PathFinder();
-		Path* ConstructGraph(ifstream& inFile);
+		Path* ConstructGraph(ifstream& inFile, Path* mat[][16]);
 		void SearchPaths(Path* root);
 		void DisplayLL();
 		void DisplayPath(int index, Path* mat[][16]);
