@@ -8,7 +8,7 @@ using namespace std;
 PathFinder PathFinder;
 
 /*
-	* Defines the root and head as null in the constructor 
+	* Defines the root and head as null in the constructor
 */
 
 PathFinder::PathFinder()
@@ -101,7 +101,7 @@ void PathFinder::ConstructGraph(ifstream& inFile, Path* mat[18][16])
 
 /*
 	* This function traverse the graph and uses a BFS in order to find all possible paths from 2 to 3
-	* It leaves a kind of bread crumb trail in order to keep track of all coordiantes that are part of 
+	* It leaves a kind of bread crumb trail in order to keep track of all coordiantes that are part of
 	* a path and which path they are part of
 	* This also allows for the program to keep track of how long each path is and keep them in order
 	* from least to greatest lengths
@@ -228,8 +228,9 @@ void PathFinder::DisplayPath(int index, Path* mat[18][16])
 	cout << "Start: 2" << endl;
 	for(int j = 0; j < temp->Link2U.arrEnd; j++)	// Traverses the Array conencted to the LL
 	{												// Gets each directional character: N, S, E, W
-    cout << temp->Link2U.arrQ[j] << endl;		    // and prints them in the apporpriate order
+    cout << temp->Link2U.arrQ[j];		    // and prints them in the apporpriate order
 	}
+  cout<<endl;
 	cout << "End: 3" << endl;
 
 	char matS[18][16];								// Defines a character 2D array to copy the node 2D array
@@ -247,16 +248,15 @@ void PathFinder::DisplayPath(int index, Path* mat[18][16])
 			}
 			else if(mat[j][i]->type == 2)
 			{
-				matS[j][i] = '2';
+				matS[j][i] = 'S';
 			}
 			else if(mat[j][i]->type == 3)
 			{
-				matS[j][i] = '3';
+				matS[j][i] = 'E';
 			}
-      		matS[j][i] = mat[j][i]->type;
 		}
 	}
-	for(int i = 0; i < temp->Link2U.arrEnd; i++)	// Traverses the array again in order to get the
+	for(int i = 1; i < temp->Link2U.arrEnd-1; i++)	// Traverses the array again in order to get the
 	{												// coordinates of each node on the path
 		int o = temp->xCrumb[i];					// Then replacces each 0 in that specific path with
 		int n = temp->yCrumb[i];					// a '*'

@@ -53,8 +53,8 @@ int main()
 
   PathFinder.SearchPaths(temp);           // Calls the search path function and passes through the root in order to find all feasable paths
 
-  while(run)            // Continues to loop as long as the user does not quit                                       
-  {         
+  while(run)            // Continues to loop as long as the user does not quit
+  {
     menu();             // Calls menu function
     getline(cin,input); // Gets the user input from the menu options
     switch(stoi(input)) // Takes the input and makes it an int to go to different cases
@@ -73,12 +73,12 @@ int main()
         PathFinder.ConstructGraph(inFile, mat);                                       // Create Graph From Input inFile
         PathFinder.SearchPaths(temp);                                                 // Breadth First Search and Sort Paths in Priority Queue
         run = true;                                                                   // Sets run to true
-      break;                                                                          // Goes back into the while loop and leaves case 
+      break;                                                                          // Goes back into the while loop and leaves case
 
       case 2: //Display List of Path Lengths
         PathFinder.DisplayLL();                                                       // Calls the Display function for LL to see the paths
         run = true;                                                                   // Sets run to true
-      break;                                                                          // Goes back into the while loop and leaves case 
+      break;                                                                          // Goes back into the while loop and leaves case
 
       case 3: //Select and Display Path
         PathFinder.DisplayLL();                                                       // Calls the Display function for LL to see the paths
@@ -87,7 +87,7 @@ int main()
         index = stoi(input);                                                          // Takes the input and makes it an interger
         PathFinder.DisplayPath(index, mat);                                           // Passes through the index and 2D array to call display funtion
         run = true;                                                                   // Sets run to true
-      break;                                                                          // Goes back into the while loop and leaves case 
+      break;                                                                          // Goes back into the while loop and leaves case
 
       case 4: //Quit
         cout << "Goodbye!" << endl;                                                   // Tells the user Adios
