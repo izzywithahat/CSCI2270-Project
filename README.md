@@ -8,6 +8,7 @@ Run Command: .\Path.exe
 To select a map file(.txt) to find paths within, enter the name of the file when asked upon program initialization
 
 Selecting option 1 at the menu will update the selected map file with a new user input file.
+	Map.txt or Epstein.txt
 
 Selecting option 2 displays a list of all found paths and their respective path lengths.
 
