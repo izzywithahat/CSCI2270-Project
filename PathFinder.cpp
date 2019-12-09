@@ -7,26 +7,32 @@
 using namespace std;
 PathFinder PathFinder;
 
-PathFinder::PathFinder(){}
+PathFinder::PathFinder()
+{
+  root = NULL;
+  head = NULL;
+}
 
-PathFinder::~PathFinder(){}
+
 
 void PathFinder::CreateLLNode(char arrQ[], int xCrumb[], int yCrumb[], int dist){
   LLPath* newNode = new LLPath;
   newNode->Link2U.arrEnd = dist;
-  newNode->Link2U.arrQ = arrQ;
   newNode->dist = dist;
-  newNode->xCrumb = xCrumb;
-  newNode->yCrumb = yCrumb;
   newNode->next = NULL;
+  for(int i=0;i<dist;i++){
+    newNode->Link2U.arrQ[i] = arrQ[i];
+    newNode->xCrumb[i]=xCrumb[i];
+    newNode->yCrumb[i]=yCrumb[i];
+  }
 
   LLPath* curr;
-
   if(!head || head->dist>newNode->dist)
   {
     newNode->next=head;
     head=newNode;
   }
+
   else
   {
     curr = head;
@@ -81,7 +87,7 @@ void PathFinder::ConstructGraph(ifstream& inFile, Path* mat[18][16])
 
 }
 
-void searchHelper(Path* node, char Que[], int xCrumb[], int yCrumb[], int dist, char StepDir)
+void PathFinder::searchHelper(Path* node, char Que[], int xCrumb[], int yCrumb[], int dist, char StepDir)
 {
 	dist++;                              //Increase Distance by one step
 	char* newQue    = new  char[dist];    //Allocate new Queue
@@ -103,8 +109,8 @@ void searchHelper(Path* node, char Que[], int xCrumb[], int yCrumb[], int dist, 
 	if(node->type == 3)
     {
 
-		PathFinder.CreateLLNode(newQue, newxCrumb, newyCrumb, dist);
-    cout << dist << endl;
+		CreateLLNode(newQue, newxCrumb, newyCrumb, dist);
+
 	    //WE DID IT
 	}
 	else
@@ -134,7 +140,7 @@ void searchHelper(Path* node, char Que[], int xCrumb[], int yCrumb[], int dist, 
        for(i = 0; i < dist; i++)
       	if(node->SChild->x == newxCrumb[i] && node->SChild->y == newyCrumb[i])
       		flag = 1;
-      if (flag == 0) searchHelper(node->SChild, newQue, newxCrumb, newyCrumb, dist, 'N');
+      if (flag == 0) searchHelper(node->SChild, newQue, newxCrumb, newyCrumb, dist, 'S');
       	flag = 0;
       //TAKE A STEP EAST
       if (!node->EChild || node->EChild->type == 1) flag = 1;
@@ -159,6 +165,8 @@ void PathFinder::SearchPaths(Path* root)
   char StepDir = '*';
 
   searchHelper(root, Que, xCrumb, yCrumb, dist, StepDir);
+
+
 }
 
 /*
@@ -170,12 +178,14 @@ void PathFinder::DisplayLL()
 
 	int count = 0;
 	LLPath* temp = head;
+
 	while(temp != NULL)
 	{
 		cout << "Path Number: " << count << " Path Distance: " << temp->dist << endl;
 		temp = temp->next;
 		count++;
 	}
+
 }
 
 /*
@@ -184,7 +194,7 @@ void PathFinder::DisplayLL()
 	* This is the printed off so the user has the directions and a map of the path.
 */
 
-void PathFinder::DisplayPath(int index, Path* mat[][16])
+void PathFinder::DisplayPath(int index, Path* mat[18][16])
 {
 	LLPath *temp = head;							// Defines a temporary pointer to the Linked List
 	for(int i = 0; i < index; i++)					// Traverses the Linked List until its at the
@@ -192,27 +202,28 @@ void PathFinder::DisplayPath(int index, Path* mat[][16])
 		temp = temp->next;
 	}
 	cout << "Path Number: " << index << endl;		// Prints what path was chosen
-	cout << "Path Distance: " << temp << endl;		// Prints the distance of this path
+	cout << "Path Distance: " << temp->dist << endl;		// Prints the distance of this path
 	cout << "Path directions from 2 to 3" << endl;
 	cout << "Start: 2" << endl;
 	for(int j = 0; j < temp->Link2U.arrEnd; j++)			// Traverses the Array conencted to the LL
 	{												// Gets each directional character: N, S, E, W
-		cout << temp->Link2U.arrQ[j] << endl;		// and prints them in the apporpriate order
+    cout << temp->Link2U.arrQ[j] << endl;		// and prints them in the apporpriate order
 	}
 	cout << "End: 3" << endl;
 
+
 	char matS[18][16];								// Defines a character 2D array to copy the node 2D array
-	for(int i = 0; i < 16; i++)						// Goes through the node 2D array and checks what 'type',
+	for(int i = 0; i < 18; i++)						// Goes through the node 2D array and checks what 'type',
 	{												// 0:empty space, 1:wall, 2:start, 3:end; each node is.
-		for(int j = 0; j < 18; j++)					// It then copies the character version of each node
+		for(int j = 0; j < 16; j++)					// It then copies the character version of each node
 		{											// into the new 2D character array
 			if(mat[j][i]->type == 0)
 			{
-				matS[j][i] = '0';
+				matS[j][i] = 32;
 			}
 			else if(mat[j][i]->type == 1)
 			{
-				matS[j][i] = '1';
+				matS[j][i] = 178;
 			}
 			else if(mat[j][i]->type == 2)
 			{
@@ -222,6 +233,7 @@ void PathFinder::DisplayPath(int index, Path* mat[][16])
 			{
 				matS[j][i] = '3';
 			}
+      matS[j][i]=mat[j][i]->type;
 		}
 	}
 	for(int i = 0; i < temp->Link2U.arrEnd; i++)			// Traverses the array again in order to get the
@@ -230,15 +242,17 @@ void PathFinder::DisplayPath(int index, Path* mat[][16])
 		int n = temp->yCrumb[i];					// a '*'
 		matS[n][o] = '*';
 	}
+
 	cout << "Map of Chosen Path" << endl << endl;	// Prints the new 2D array with the path that was found
-	for(int i = 0; i < 16; i++)
+	for(int j = 0; j < 16; j++)
 	{
-		for(int j = 0; j < 18; j++)
+		for(int i = 0; i < 18; i++)
 		{
 			cout << matS[j][i];
 		}
 		cout << endl;
 	}
+
 }
 
 void PathFinder::SavePath(ifstream& inFile, int index)

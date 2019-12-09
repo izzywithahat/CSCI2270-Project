@@ -4,7 +4,7 @@ using namespace std;
 
 struct PathQ
 {
-	char* arrQ;
+	char arrQ[50];
 	int arrEnd;
 };
 
@@ -12,8 +12,8 @@ struct LLPath
 {
 	PathQ Link2U;
 	int dist=0;
-	int* xCrumb;
-	int* yCrumb;
+	int xCrumb[50];
+	int yCrumb[50];
 	struct LLPath* next;
 };
 
@@ -32,15 +32,16 @@ class PathFinder
 {
 	public:
 		PathFinder();
-		~PathFinder();
 		void ConstructGraph(ifstream& inFile, Path* mat[18][16]);
 		void SearchPaths(Path* root);
 		void DisplayLL();
 		void DisplayPath(int index, Path* mat[18][16]);
 		void SavePath(ifstream& inFile, int index);
 		void CreateLLNode(char arrQ[], int xCrumb[], int yCrumb[], int dist);
-
+		void searchHelper(Path* node, char Que[], int xCrumb[], int yCrumb[], int dist, char StepDir);
 	private:
-		Path *root = NULL;
-		LLPath *head = NULL;
+		Path *root;
+		LLPath *head;
+
+
 };

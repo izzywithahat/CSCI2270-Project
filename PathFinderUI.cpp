@@ -12,8 +12,7 @@ void menu()
 	cout << "1. Change the Map File (.txt)" << endl;
 	cout << "2. Display List of Path Lengths" << endl;
   cout << "3. Select and Display Path" << endl;
-  cout << "4. Output Map with Selected Path" <<endl;
-	cout << "5. Quit" << endl;
+  cout << "4. Quit" << endl;
 }
 
 int main()
@@ -41,6 +40,7 @@ int main()
   Path* mat[18][16] = {};
 	PathFinder.ConstructGraph(inFile, mat);
 
+
   for(int i = 0; i < 16; i++)
   {
     for(int j = 0; j < 18; j++)
@@ -51,7 +51,9 @@ int main()
   }
 
   PathFinder.SearchPaths(temp);
-cout << "WE HERE"<<endl;
+
+
+
   while(run)
   {
     menu();
@@ -90,16 +92,8 @@ cout << "WE HERE"<<endl;
         run=true;
       break;
 
-      case 4: //Output Map with Selected Path
-      PathFinder.DisplayLL();
-        cout << "Enter the index number of the Path you would like to take" << endl;
-        getline(cin,input);
-        index = stoi(input);
-        PathFinder.SavePath(inFile, index);
-        run = true;
-      break;
 
-      case 5: //Quit
+      case 4: //Quit
         cout << "Goodbye!" << endl;
         run = false;
         inFile.close();
