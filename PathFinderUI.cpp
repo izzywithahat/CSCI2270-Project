@@ -6,7 +6,8 @@
 
 using namespace std;
 
-void menu(){
+void menu()
+{
 	cout << "======Main Menu======" << endl;
 	cout << "1. Change the Map File (.txt)" << endl;
 	cout << "2. Display List of Path Lengths" << endl;
@@ -17,86 +18,94 @@ void menu(){
 
 int main()
 {
-PathFinder PathFinder;
-string input;
-bool run = true;
-int index;
-ifstream inFile;
 
-cout << "Enter Input Map File (.txt)" << endl;
-getline(cin,input);
-inFile.open(input);
+  PathFinder PathFinder;
+  string input;
+  bool run = true;
+  int index;
+  ifstream inFile;
 
-while(!inFile.is_open()){
-  cout << "Invalid Input File, please enter valid Input File (.txt)" << endl;
   cout << "Enter Input Map File (.txt)" << endl;
   getline(cin,input);
-  inFile.open(input);;
-}
-Path* root;
-Path** mat = PathFinder.ConstructGraph(inFile);
-for(int i=0; i<16; i++){
-  for(int j=0; j<18; j++){
-    if(mat[j][i]->type==2)
-      root=mat[j][i];
+  inFile.open(input);
+
+  while(!inFile.is_open())
+  {
+    cout << "Invalid Input File, please enter valid Input File (.txt)" << endl;
+    cout << "Enter Input Map File (.txt)" << endl;
+    getline(cin,input);
+    inFile.open(input);;
   }
-}
-PathFinder.SearchPaths(root);
+  Path* temp;
+  Path* mat[18][16] = PathFinder.ConstructGraph(inFile);
+  for(int i = 0; i < 16; i++)
+  {
+    for(int j = 0; j < 18; j++)
+    {
+      if(mat[j][i]->type == 2)
+        temp = mat[j][i];
+    }
+  }
+  PathFinder.SearchPaths(temp);
 
-while(run){
-  menu();
-  getline(cin,input);
-  switch(stoi(input)){
+  while(run)
+  {
+    menu();
+    getline(cin,input);
+    switch(stoi(input))
+    {
 
-    case 1: //Change the Map File (.txt)
-      cout << "Enter Input Map File (.txt)" << endl;
-      getline(cin,input);
-      inFile.open(input);
-
-      while(!inFile.is_open()){
-        cout << "Invalid Input File, please enter valid Input File (.txt)" << endl;
+      case 1: //Change the Map File (.txt)
         cout << "Enter Input Map File (.txt)" << endl;
         getline(cin,input);
-        inFile.open(input);;
-      }
-      PathFinder.ConstructGraph(inFile); //Create Graph From Input inFile
-      PathFinder.SearchPaths(); //Breadth First Search and Sort Paths in Priority Queue
-      run=true;
-    break;
+        inFile.open(input);
 
-    case 2: //Display List of Path Lengths
+        while(!inFile.is_open())
+        {
+          cout << "Invalid Input File, please enter valid Input File (.txt)" << endl;
+          cout << "Enter Input Map File (.txt)" << endl;
+          getline(cin,input);
+          inFile.open(input);;
+        }
+        PathFinder.ConstructGraph(inFile); //Create Graph From Input inFile
+        PathFinder.SearchPaths(temp); //Breadth First Search and Sort Paths in Priority Queue
+        run = true;
+      break;
+
+      case 2: //Display List of Path Lengths
+        PathFinder.DisplayLL();
+        run = true;
+      break;
+
+      case 3: //Select and Display Path
+        PathFinder.DisplayLL();
+        cout << "Enter the index number of the Path you would like to take" << endl;
+        getline(cin, input);
+        index = stoi(input);
+        PathFinder.DisplayPath(index, mat);
+        run=true;
+      break;
+
+      case 4: //Output Map with Selected Path
       PathFinder.DisplayLL();
-      run=true;
-    break;
+        cout << "Enter the index number of the Path you would like to take" << endl;
+        getline(cin,input);
+        index = stoi(input);
+        PathFinder.SavePath(inFile, index);
+        run = true;
+      break;
 
-    case 3: //Select and Display Path
-      PathFinder.DisplayLL();
-      cout << "Enter the index number of the Path you would like to take" << endl;
-      getline(cin,input);
-      index=stoi(input);
-      PathFinder.DisplayPath(index);
-      run=true;
-    break;
+      case 5: //Quit
+        cout << "Goodbye!" << endl;
+        run = false;
+        inFile.close();
+        PathFinder.~PathFinder();
+      break;
 
-    case 4: //Output Map with Selected Path
-    PathFinder.DisplayLL();
-      cout << "Enter the index number of the Path you would like to take" << endl;
-      getline(cin,input);
-      index=stoi(input);
-      PathFinder.SavePath(inFile, index);
-      run=true;
-    break;
-
-    case 5: //Quit
-      cout << "Goodbye!" << endl;
-      run=false;
-      inFile.close();
-      PathFinder.~PathFinder();
-    break;
-    default:
-      cout << "Invalid Input" << endl;
-      run=true;
-    break;
+      default:
+        cout << "Invalid Input" << endl;
+        run = true;
+      break;
     }
   }
 }
