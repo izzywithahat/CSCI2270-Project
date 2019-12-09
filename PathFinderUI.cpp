@@ -36,15 +36,16 @@ int main()
     getline(cin,input);
     inFile.open(input);;
   }
-  
+
   Path* temp;
-  Path* mat[18][16] = PathFinder.ConstructGraph(inFile);
+  Path* mat[18][16] = {};
+	PathFinder.ConstructGraph(inFile, mat);
   for(int i = 0; i < 16; i++)
   {
     for(int j = 0; j < 18; j++)
     {
       if(mat[j][i]->type == 2)
-        temp = mat[j][i];
+        temp =mat[j][i];
     }
   }
   PathFinder.SearchPaths(temp);
@@ -68,7 +69,7 @@ int main()
           getline(cin,input);
           inFile.open(input);;
         }
-        PathFinder.ConstructGraph(inFile); //Create Graph From Input inFile
+        PathFinder.ConstructGraph(inFile,mat); //Create Graph From Input inFile
         PathFinder.SearchPaths(temp); //Breadth First Search and Sort Paths in Priority Queue
         run = true;
       break;

@@ -38,13 +38,12 @@ void PathFinder::CreateLLNode(char arrQ[], int xCrumb[], int yCrumb[], int dist)
 
 }
 
-Path* PathFinder::ConstructGraph(ifstream& inFile, Path* mat[][])
+void PathFinder::ConstructGraph(ifstream& inFile, Path* mat[18][16])
 {
   string line;
   string token;
   int x = 0;
   int y = 0;
-  Path* mat[18][16];
   while(getline(inFile, line)) //Copy Map File onto Graph Matrix
   {
     stringstream ss(line);
@@ -72,7 +71,6 @@ Path* PathFinder::ConstructGraph(ifstream& inFile, Path* mat[][])
         mat[y][x]->SChild = mat[y+1][x];
     }
   }
-  return mat;
 }
 
 void searchHelper(Path* node, char Que[], int xCrumb[], int yCrumb[], int dist, char StepDir)
@@ -169,19 +167,19 @@ void PathFinder::DisplayLL()
 	* The Purpose of this function is to display the path first directionally, the steps to get from A to B or in this case 2 to 3.
 	* It the takes in the node 2D matrix and changes everything to a character 2D array and diplays the path, '*', on the matrix.
 	* This is the printed off so the user has the directions and a map of the path.
-*/ 
+*/
 
 void PathFinder::DisplayPath(int index, Path* mat[][16])
 {
 	LLPath *temp = head;							// Defines a temporary pointer to the Linked List
-	for(int i = 0; i < index; i++)					// Traverses the Linked List until its at the 
+	for(int i = 0; i < index; i++)					// Traverses the Linked List until its at the
 	{												// required index that has the desired path
 		temp = temp->next;
 	}
 	cout << "Path Number: " << index << endl;		// Prints what path was chosen
 	cout << "Path Distance: " << temp << endl;		// Prints the distance of this path
-	cout << "Path directions from 2 to 3" << endl;	
-	cout << "Start: 2" << endl;		
+	cout << "Path directions from 2 to 3" << endl;
+	cout << "Start: 2" << endl;
 	for(int j = 0; j < temp->Link2U.arrEnd; j++)			// Traverses the Array conencted to the LL
 	{												// Gets each directional character: N, S, E, W
 		cout << temp->Link2U.arrQ[j] << endl;		// and prints them in the apporpriate order
@@ -202,7 +200,7 @@ void PathFinder::DisplayPath(int index, Path* mat[][16])
 				matS[j][i] = '1';
 			}
 			else if(mat[j][i]->type == 2)
-			{	
+			{
 				matS[j][i] = '2';
 			}
 			else if(mat[j][i]->type == 3)
@@ -211,7 +209,7 @@ void PathFinder::DisplayPath(int index, Path* mat[][16])
 			}
 		}
 	}
-	for(int i = 0; i < temp->Link2U.arrEnd; i++)			// Traverses the array again in order to get the 
+	for(int i = 0; i < temp->Link2U.arrEnd; i++)			// Traverses the array again in order to get the
 	{												// coordinates of each node on the path
 		int o = temp->xCrumb[i];					// Then replacces each 0 in that specific path with
 		int n = temp->yCrumb[i];					// a '*'
