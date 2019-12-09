@@ -7,20 +7,29 @@
 using namespace std;
 PathFinder PathFinder;
 
+/*
+	* Defines the root and head as null in the constructor 
+*/
+
 PathFinder::PathFinder()
 {
   root = NULL;
   head = NULL;
 }
 
+/*
+	* Takes the bread crumb trail and the direction queue created while findind a successful path
+	* It then inserts that information into the direct place in the priority queue
+*/
 
-
-void PathFinder::CreateLLNode(char arrQ[], int xCrumb[], int yCrumb[], int dist){
+void PathFinder::CreateLLNode(char arrQ[], int xCrumb[], int yCrumb[], int dist)
+{
   LLPath* newNode = new LLPath;
   newNode->Link2U.arrEnd = dist;
   newNode->dist = dist;
   newNode->next = NULL;
-  for(int i=0;i<dist;i++){
+  for(int i=0;i<dist;i++)
+  {
     newNode->Link2U.arrQ[i] = arrQ[i];
     newNode->xCrumb[i]=xCrumb[i];
     newNode->yCrumb[i]=yCrumb[i];
@@ -32,7 +41,6 @@ void PathFinder::CreateLLNode(char arrQ[], int xCrumb[], int yCrumb[], int dist)
     newNode->next=head;
     head=newNode;
   }
-
   else
   {
     curr = head;
@@ -41,8 +49,12 @@ void PathFinder::CreateLLNode(char arrQ[], int xCrumb[], int yCrumb[], int dist)
     newNode->next = curr->next;
     curr->next = newNode;
   }
-
 }
+
+/*
+	* This function takes in the text file and puts it into a graph in such a way that we are able to
+	* put it into a 2D array, matrix, of pointers that will be able to be accessed by other functions.
+*/
 
 void PathFinder::ConstructGraph(ifstream& inFile, Path* mat[18][16])
 {
@@ -50,9 +62,9 @@ void PathFinder::ConstructGraph(ifstream& inFile, Path* mat[18][16])
   string token;
   int x = 0;
   int y = 0;
-  for(int i=0;i<16;i++)
-    for(int j=0;j<18;j++)
-      mat[j][i]=new Path;
+  for(int i = 0; i < 16; i++)
+    for(int j = 0; j < 18; j++)
+      mat[j][i] = new Path;
 
   while(getline(inFile, line)) //Copy Map File onto Graph Matrix
   {
@@ -64,7 +76,7 @@ void PathFinder::ConstructGraph(ifstream& inFile, Path* mat[18][16])
       mat[y][x]->type = stoi(token);
       x++;
     }
-    x=0;
+    x = 0;
     y++;
   }
 
@@ -87,30 +99,36 @@ void PathFinder::ConstructGraph(ifstream& inFile, Path* mat[18][16])
 
 }
 
+/*
+	* This function traverse the graph and uses a BFS in order to find all possible paths from 2 to 3
+	* It leaves a kind of bread crumb trail in order to keep track of all coordiantes that are part of 
+	* a path and which path they are part of
+	* This also allows for the program to keep track of how long each path is and keep them in order
+	* from least to greatest lengths
+*/
+
 void PathFinder::searchHelper(Path* node, char Que[], int xCrumb[], int yCrumb[], int dist, char StepDir)
 {
 	dist++;                              //Increase Distance by one step
-	char* newQue    = new  char[dist];    //Allocate new Queue
+	char* newQue    = new  char[dist];   //Allocate new Queue
 	int*  newxCrumb = new  int[dist];
 	int*  newyCrumb = new  int[dist];
 
-	for(int i = 0; i < dist-1; i++) 	   //Copy Old Queue & Breadcrumb Trail
+	for(int i = 0; i < dist-1; i++) 	 //Copy Old Queue & Breadcrumb Trail
 	{
 		newQue[i] = Que[i];
     	newxCrumb[i] = xCrumb[i];
     	newyCrumb[i] = yCrumb[i];
     }
 
-    newQue[dist-1] = StepDir;       //Update Queue with new Step
-    newxCrumb[dist-1] = node->x;    //Update Breadcrumb Trail with New Postion
-    newyCrumb[dist-1] = node->y;    //Update Breadcrumb Trail with New Postion
+    newQue[dist-1] = StepDir;       	//Update Queue with new Step
+    newxCrumb[dist-1] = node->x;    	//Update Breadcrumb Trail with New Postion
+    newyCrumb[dist-1] = node->y;    	//Update Breadcrumb Trail with New Postion
 
 	//If at end -> save newQue to LL
 	if(node->type == 3)
     {
-
 		CreateLLNode(newQue, newxCrumb, newyCrumb, dist);
-
 	    //WE DID IT
 	}
 	else
@@ -119,13 +137,14 @@ void PathFinder::searchHelper(Path* node, char Que[], int xCrumb[], int yCrumb[]
       int i = 0;
 
       //TAKE A STEP NORTH
-		  if (!node->NChild || node->NChild->type == 1) flag = 1;
+		  if (!node->NChild || node->NChild->type == 1) flag = 1;							// Checks if the child does not exist or if its a wall -> stops
       if (flag == 0)
-        for(i = 0; i < dist; i++)
+        for(i = 0; i < dist; i++)															// If the childs location is found on the bread crumb trail  -> stops
 	       if(node->NChild->x == newxCrumb[i] && node->NChild->y == newyCrumb[i])
       		flag = 1;
-      if (flag == 0) searchHelper(node->NChild, newQue, newxCrumb, newyCrumb, dist, 'N');
+      if (flag == 0) searchHelper(node->NChild, newQue, newxCrumb, newyCrumb, dist, 'N');	// If none of the above it proceeds down this path
       	flag = 0;
+
       //TAKE A STEP WEST
       if (!node->WChild || node->WChild->type == 1) flag = 1;
       if (flag == 0)
@@ -134,6 +153,7 @@ void PathFinder::searchHelper(Path* node, char Que[], int xCrumb[], int yCrumb[]
           flag = 1;
       if (flag == 0) searchHelper(node->WChild, newQue, newxCrumb, newyCrumb, dist, 'W');
         flag = 0;
+
       //TAKE A STEP SOUTH
       if (!node->SChild || node->SChild->type == 1) flag = 1;
       if (flag == 0)
@@ -142,6 +162,7 @@ void PathFinder::searchHelper(Path* node, char Que[], int xCrumb[], int yCrumb[]
       		flag = 1;
       if (flag == 0) searchHelper(node->SChild, newQue, newxCrumb, newyCrumb, dist, 'S');
       	flag = 0;
+
       //TAKE A STEP EAST
       if (!node->EChild || node->EChild->type == 1) flag = 1;
       if (flag == 0)
@@ -151,10 +172,14 @@ void PathFinder::searchHelper(Path* node, char Que[], int xCrumb[], int yCrumb[]
       if (flag == 0) searchHelper(node->EChild, newQue, newxCrumb, newyCrumb, dist, 'E');
        flag = 0;
     }
-	delete [] newQue;
-  	delete [] newxCrumb;
-  	delete [] newyCrumb;
+	delete [] newQue;		// Deallocates space
+  	delete [] newxCrumb;	// Deallocates space
+  	delete [] newyCrumb;	// Deallocates space
 }
+
+/*
+	* Initializes the recurrsion of the BFS and then calls the helper function to find ALL the paths
+*/
 
 void PathFinder::SearchPaths(Path* root)
 {
@@ -165,8 +190,6 @@ void PathFinder::SearchPaths(Path* root)
   char StepDir = '*';
 
   searchHelper(root, Que, xCrumb, yCrumb, dist, StepDir);
-
-
 }
 
 /*
@@ -175,7 +198,6 @@ void PathFinder::SearchPaths(Path* root)
 
 void PathFinder::DisplayLL()
 {
-
 	int count = 0;
 	LLPath* temp = head;
 
@@ -185,7 +207,6 @@ void PathFinder::DisplayLL()
 		temp = temp->next;
 		count++;
 	}
-
 }
 
 /*
@@ -202,15 +223,14 @@ void PathFinder::DisplayPath(int index, Path* mat[18][16])
 		temp = temp->next;
 	}
 	cout << "Path Number: " << index << endl;		// Prints what path was chosen
-	cout << "Path Distance: " << temp->dist << endl;		// Prints the distance of this path
+	cout << "Path Distance: " << temp->dist << endl;// Prints the distance of this path
 	cout << "Path directions from 2 to 3" << endl;
 	cout << "Start: 2" << endl;
-	for(int j = 0; j < temp->Link2U.arrEnd; j++)			// Traverses the Array conencted to the LL
+	for(int j = 0; j < temp->Link2U.arrEnd; j++)	// Traverses the Array conencted to the LL
 	{												// Gets each directional character: N, S, E, W
-    cout << temp->Link2U.arrQ[j] << endl;		// and prints them in the apporpriate order
+    cout << temp->Link2U.arrQ[j] << endl;		    // and prints them in the apporpriate order
 	}
 	cout << "End: 3" << endl;
-
 
 	char matS[18][16];								// Defines a character 2D array to copy the node 2D array
 	for(int i = 0; i < 18; i++)						// Goes through the node 2D array and checks what 'type',
@@ -233,10 +253,10 @@ void PathFinder::DisplayPath(int index, Path* mat[18][16])
 			{
 				matS[j][i] = '3';
 			}
-      matS[j][i]=mat[j][i]->type;
+      		matS[j][i] = mat[j][i]->type;
 		}
 	}
-	for(int i = 0; i < temp->Link2U.arrEnd; i++)			// Traverses the array again in order to get the
+	for(int i = 0; i < temp->Link2U.arrEnd; i++)	// Traverses the array again in order to get the
 	{												// coordinates of each node on the path
 		int o = temp->xCrumb[i];					// Then replacces each 0 in that specific path with
 		int n = temp->yCrumb[i];					// a '*'
@@ -252,10 +272,5 @@ void PathFinder::DisplayPath(int index, Path* mat[18][16])
 		}
 		cout << endl;
 	}
-
-}
-
-void PathFinder::SavePath(ifstream& inFile, int index)
-{
 
 }

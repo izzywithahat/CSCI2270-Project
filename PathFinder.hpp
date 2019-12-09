@@ -19,7 +19,7 @@ struct LLPath
 
 struct Path
 {
-	int type=0;
+	int type = 0;
 	int x = 0;
 	int y = 0;
 	Path *NChild = NULL;
@@ -36,7 +36,6 @@ class PathFinder
 		void SearchPaths(Path* root);
 		void DisplayLL();
 		void DisplayPath(int index, Path* mat[18][16]);
-		void SavePath(ifstream& inFile, int index);
 		void CreateLLNode(char arrQ[], int xCrumb[], int yCrumb[], int dist);
 		void searchHelper(Path* node, char Que[], int xCrumb[], int yCrumb[], int dist, char StepDir);
 	private:
