@@ -22,7 +22,7 @@ void PathFinder::CreateLLNode(char arrQ[], int xCrumb[], int yCrumb[], int dist)
 
   LLPath* curr;
 
-  if(head->dist>newNode->dist || !head)
+  if(!head || head->dist>newNode->dist)
   {
     newNode->next=head;
     head=newNode;
@@ -44,21 +44,28 @@ void PathFinder::ConstructGraph(ifstream& inFile, Path* mat[18][16])
   string token;
   int x = 0;
   int y = 0;
+  for(int i=0;i<16;i++)
+    for(int j=0;j<18;j++)
+      mat[j][i]=new Path;
+
   while(getline(inFile, line)) //Copy Map File onto Graph Matrix
   {
     stringstream ss(line);
     while(ss >> token)
     {
-      mat[y][x]->type = stoi(token);
       mat[y][x]->x = x;
       mat[y][x]->y = y;
+      mat[y][x]->type = stoi(token);
       x++;
     }
+    x=0;
     y++;
   }
+
   //Create Graph From Matrix
   for(x = 0; x < 16; x++)
   {
+
     for(y = 0; y < 18; y++)
     {
       if(x - 1 >= 0)
@@ -71,6 +78,7 @@ void PathFinder::ConstructGraph(ifstream& inFile, Path* mat[18][16])
         mat[y][x]->SChild = mat[y+1][x];
     }
   }
+
 }
 
 void searchHelper(Path* node, char Que[], int xCrumb[], int yCrumb[], int dist, char StepDir)
@@ -91,11 +99,12 @@ void searchHelper(Path* node, char Que[], int xCrumb[], int yCrumb[], int dist, 
     newxCrumb[dist-1] = node->x;    //Update Breadcrumb Trail with New Postion
     newyCrumb[dist-1] = node->y;    //Update Breadcrumb Trail with New Postion
 
-
 	//If at end -> save newQue to LL
 	if(node->type == 3)
     {
+
 		PathFinder.CreateLLNode(newQue, newxCrumb, newyCrumb, dist);
+    cout << dist << endl;
 	    //WE DID IT
 	}
 	else
@@ -104,30 +113,34 @@ void searchHelper(Path* node, char Que[], int xCrumb[], int yCrumb[], int dist, 
       int i = 0;
 
       //TAKE A STEP NORTH
-		  if (node->NChild->type == 1 || !node->NChild) flag = 1;
-      for(i = 0; i < dist; i++)
-      	if(node->NChild->x == newxCrumb[i] && node->NChild->y == newyCrumb[i])
+		  if (!node->NChild || node->NChild->type == 1) flag = 1;
+      if (flag == 0)
+        for(i = 0; i < dist; i++)
+	       if(node->NChild->x == newxCrumb[i] && node->NChild->y == newyCrumb[i])
       		flag = 1;
       if (flag == 0) searchHelper(node->NChild, newQue, newxCrumb, newyCrumb, dist, 'N');
       	flag = 0;
       //TAKE A STEP WEST
-      if (node->WChild->type == 1 || !node->WChild) flag = 1;
-      for(i = 0; i < dist; i++)
+      if (!node->WChild || node->WChild->type == 1) flag = 1;
+      if (flag == 0)
+       for(i = 0; i < dist; i++)
         if(node->WChild->x == newxCrumb[i] && node->WChild->y == newyCrumb[i])
           flag = 1;
       if (flag == 0) searchHelper(node->WChild, newQue, newxCrumb, newyCrumb, dist, 'W');
         flag = 0;
       //TAKE A STEP SOUTH
-      if (node->SChild->type == 1 || !node->SChild) flag = 1;
-      for(i = 0; i < dist; i++)
+      if (!node->SChild || node->SChild->type == 1) flag = 1;
+      if (flag == 0)
+       for(i = 0; i < dist; i++)
       	if(node->SChild->x == newxCrumb[i] && node->SChild->y == newyCrumb[i])
       		flag = 1;
       if (flag == 0) searchHelper(node->SChild, newQue, newxCrumb, newyCrumb, dist, 'N');
       	flag = 0;
       //TAKE A STEP EAST
-      if (node->EChild->type == 1 || !node->EChild) flag = 1;
-      for(i = 0; i < dist; i++)
-       if(node->EChild->x == newxCrumb[i] && node->EChild->y == newyCrumb[i])
+      if (!node->EChild || node->EChild->type == 1) flag = 1;
+      if (flag == 0)
+       for(i = 0; i < dist; i++)
+        if(node->EChild->x == newxCrumb[i] && node->EChild->y == newyCrumb[i])
          flag = 1;
       if (flag == 0) searchHelper(node->EChild, newQue, newxCrumb, newyCrumb, dist, 'E');
        flag = 0;
@@ -144,6 +157,7 @@ void PathFinder::SearchPaths(Path* root)
   int  yCrumb[1] = {root->y};
   int  dist = 0;
   char StepDir = '*';
+
   searchHelper(root, Que, xCrumb, yCrumb, dist, StepDir);
 }
 
@@ -153,6 +167,7 @@ void PathFinder::SearchPaths(Path* root)
 
 void PathFinder::DisplayLL()
 {
+
 	int count = 0;
 	LLPath* temp = head;
 	while(temp != NULL)

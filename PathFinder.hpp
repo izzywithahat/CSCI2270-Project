@@ -11,7 +11,7 @@ struct PathQ
 struct LLPath
 {
 	PathQ Link2U;
-	int dist;
+	int dist=0;
 	int* xCrumb;
 	int* yCrumb;
 	struct LLPath* next;
@@ -19,7 +19,7 @@ struct LLPath
 
 struct Path
 {
-	int type;
+	int type=0;
 	int x = 0;
 	int y = 0;
 	Path *NChild = NULL;

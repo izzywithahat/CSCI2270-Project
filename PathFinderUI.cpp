@@ -34,12 +34,13 @@ int main()
     cout << "Invalid Input File, please enter valid Input File (.txt)" << endl;
     cout << "Enter Input Map File (.txt)" << endl;
     getline(cin,input);
-    inFile.open(input);;
+    inFile.open(input);
   }
 
   Path* temp;
   Path* mat[18][16] = {};
 	PathFinder.ConstructGraph(inFile, mat);
+
   for(int i = 0; i < 16; i++)
   {
     for(int j = 0; j < 18; j++)
@@ -48,8 +49,9 @@ int main()
         temp =mat[j][i];
     }
   }
-  PathFinder.SearchPaths(temp);
 
+  PathFinder.SearchPaths(temp);
+cout << "WE HERE"<<endl;
   while(run)
   {
     menu();
