@@ -36,6 +36,7 @@ int main()
     getline(cin,input);
     inFile.open(input);;
   }
+  
   Path* temp;
   Path* mat[18][16] = PathFinder.ConstructGraph(inFile);
   for(int i = 0; i < 16; i++)
